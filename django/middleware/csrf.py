@@ -5,7 +5,7 @@ This module provides a middleware that implements protection
 against request forgeries from other sites.
 """
 
-import hashlib
+# yak: import hashlib
 import re
 import random
 
@@ -14,7 +14,7 @@ from django.core.urlresolvers import get_callable
 from django.utils.cache import patch_vary_headers
 from django.utils.http import same_origin
 from django.utils.log import getLogger
-from django.utils.crypto import constant_time_compare, get_random_string
+from django.utils.crypto import constant_time_compare, Token  # yak: new
 
 logger = getLogger('django.request')
 
@@ -33,8 +33,9 @@ def _get_failure_view():
 
 
 def _get_new_csrf_key():
-    return get_random_string(CSRF_KEY_LENGTH)
-
+    # yak: return hashlib.md5("%s%s" % (randrange(0, _MAX_CSRF_KEY), settings.SECRET_KEY)).hexdigest()
+    t=Token("%s%s" % (randrange(0, _MAX_CSRF_KEY), settings.SECRET_KEY)
+    return t.base_16_digest()
 
 def get_token(request):
     """
