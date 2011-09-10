@@ -39,6 +39,7 @@ _trans_36 = b"".join([chr(x ^ 0x36) for x in xrange(256)])
 # digits
 # lowercase
 # uppercase
+ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 ALLCASE_ALPHANUMERIC = string.digits + string.uppercase + string.lowercase
 DIGITS = string.digits
@@ -67,8 +68,22 @@ def base62_encode(num, alphabet=digits+letters):
     arr.reverse()
     return ''.join(arr)
 
-
-class Base_Token():
+class RandomToken():
+    def digits(self):
+        # Probably want to implement the NotImplementedError
+        pass
+    
+    def digits(self):
+        # Probably want to implement the NotImplementedError
+        pass
+        
+    def alphanumeric(self, length=32, case_sensitive=True):
+        # Probably want to implement the NotImplementedError
+        pass
+    
+    def digits(self):
+        
+class Token():
     def __init__(self, value=None, random=False):
         if random:
             self._hash = hashlib.md5(random.getrandbits(256))
