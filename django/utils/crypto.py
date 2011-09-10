@@ -56,26 +56,6 @@ READABLE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz'
 
 DEFAULT_TOKEN_LENGTH = 32
 
-
-
-
-def base62_encode(num, alphabet=digits+letters):
-    """Encode a number in Base X
-
-    `num`: The number to encode
-    `alphabet`: The alphabet to use for encoding
-    """
-    if (num == 0):
-        return alphabet[0]
-    arr = []
-    base = len(alphabet)
-    while num:
-        rem = num % base
-        num = num // base
-        arr.append(alphabet[rem])
-    arr.reverse()
-    return ''.join(arr)
-
 class RandomToken():
     """
     Object that creates randomized token.
@@ -122,6 +102,7 @@ class Token():
         Outputs our hash to a base 16 string.
         """
         return self._hash.hexdigest()[:length]
+
 
 
 class HashToken():
