@@ -54,20 +54,61 @@ LOWER_ALPHANUMERIC = string.digits + string.lowercase
 READABLE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz'
 
 
+DEFAULT_TOKEN_LENGTH = 32
+
+
+
+
+def base62_encode(num, alphabet=digits+letters):
+    """Encode a number in Base X
+
+    `num`: The number to encode
+    `alphabet`: The alphabet to use for encoding
+    """
+    if (num == 0):
+        return alphabet[0]
+    arr = []
+    base = len(alphabet)
+    while num:
+        rem = num % base
+        num = num // base
+        arr.append(alphabet[rem])
+    arr.reverse()
+    return ''.join(arr)
+
 class RandomToken():
-    def digits(self):
-        # Probably want to implement the NotImplementedError
-        pass
-    
-    def digits(self):
-        # Probably want to implement the NotImplementedError
-        pass
+    """
+    Object that creates randomized token.
+    """
+    def digits(self, length=DEFAULT_TOKEN_LENGTH):
+        """
+        Creates a randomized token consisting of the DIGIT character set.
+        """
+        return self._build_token(DIGITS, length)
         
-    def alphanumeric(self, length=32, case_sensitive=True):
-        # Probably want to implement the NotImplementedError
-        pass
+    def alphanumeric(self, length=DEFAULT_TOKEN_LENGTH):
+        """
+        Creates a randomized token consisting of the general ALPHANUMERIC character sets.
+        """
+        return self._build_token(ALPHANUMERIC, length)
     
-    def digits(self):
+    def lower_alphanumeric(self, length=DEFAULT_TOKEN_LENGTH):
+        """
+        Creates a randomized token consisting of the LOWER_ALPHANUMERIC character sets.
+        """
+        return self._build_token(LOWER_ALPHANUMERIC, length)
+    
+    def readable_alphanumeric(self, length=DEFAULT_TOKEN_LENGTH):
+        """
+        Creates a randomized token consisting of the READABLE_ALPHABET character set.
+        """
+        return self._build_token(READABLE_ALPHABET, length)
+    
+    def _build_token(self, character_set, length):
+        """
+        Builds a random token of the specified length using the characters available in the specified character set.
+        """
+        return ''.join([random.choice(character_set) for i in range(length)])
         
 class Token():
     def __init__(self, value=None, random=False):
