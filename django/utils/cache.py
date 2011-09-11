@@ -27,7 +27,7 @@ from django.utils.encoding import iri_to_uri, force_unicode
 from django.utils.http import http_date
 from django.utils.timezone import get_current_timezone_name
 from django.utils.translation import get_language
-from django.utils.crypto import HashToken
+from django.utils.tokens import HashToken
 
 cc_delim_re = re.compile(r'\s*,\s*')
 
