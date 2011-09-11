@@ -144,7 +144,6 @@ class HashToken():
         self._hash = self._hash.update(value)
 
 
-
 def salted_hmac(key_salt, value, secret=None):
     """
     Returns the HMAC-SHA1 of 'value', using a key generated from key_salt and a
