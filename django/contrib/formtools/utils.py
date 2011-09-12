@@ -3,7 +3,7 @@ import pickle
 
 from django.conf import settings
 from django.utils.crypto import salted_hmac
-from django.utils.token import HashToken
+from django.utils.tokens import HashToken
 
 
 def security_hash(request, form, *args):

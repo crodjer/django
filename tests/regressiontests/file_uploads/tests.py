@@ -13,7 +13,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http.multipartparser import MultiPartParser
 from django.test import TestCase, client
 from django.utils import unittest
-from django.utils.token import HashToken
+from django.utils.tokens import HashToken
 
 from . import uploadhandler
 from .models import FileModel, temp_storage, UPLOAD_TO
