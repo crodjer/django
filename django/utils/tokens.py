@@ -5,7 +5,10 @@ Django's standard token library and utilities.
 import hashlib
 import string
 import random
+from datetime import date
+from django.conf import settings
 from django.utils.baseconv import BaseConverter
+from django.utils.crypto import constant_time_compare, salted_hmac
 
 try:
     random = random.SystemRandom()
