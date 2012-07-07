@@ -7,7 +7,7 @@ from time import time
 from django.conf import settings
 from django.utils.log import getLogger
 from django.utils.timezone import utc
-from django.utils.token import HashToken
+from django.utils.tokens import HashToken
 
 
 logger = getLogger('django.db.backends')

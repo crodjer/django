@@ -10,7 +10,7 @@ from .models import FileModel, UPLOAD_TO
 from .tests import UNICODE_FILENAME
 from .uploadhandler import QuotaUploadHandler, ErroringUploadHandler
 
-from django.utils.token import HashToken
+from django.utils.tokens import HashToken
 
 def file_upload_view(request):
     """
