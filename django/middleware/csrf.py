@@ -68,36 +68,37 @@ class CsrfChecker(object):
     A CSRF Checker.
     """
 
-    def __init__(self, request, callback, callback_args, callback_kwargs):
+    def __init__(self, request):
         self.request = request
-        self.callback = callback
-        self.callback_args = callback_args
-        self.callback_kwargs = callback_kwargs
 
     def _reject(self, request, reason):
         return _get_failure_view()(request, reason=reason)
 
-    def process_response(self, request):
+    def process_request(self, request):
         return request
+
+    def process_response(self, request, response):
+        return response
 
 
 class TokenChecker(CsrfChecker):
 
-    def __init__(self, *args, **kwargs):
-        super(TokenChecker, self).__init__(*args, **kwargs)
+    def process_request(self, request):
 
         try:
             csrf_token = _sanitize_token(
-                self.request.COOKIES[settings.CSRF_COOKIE_NAME])
+                request.COOKIES[settings.CSRF_COOKIE_NAME])
             # Use same token next time
-            self.request.META['CSRF_COOKIE'] = csrf_token
+            request.META['CSRF_COOKIE'] = csrf_token
         except KeyError:
             csrf_token = None
             # Generate token and store it in the request, so it's
             # available to the view.
-            self.request.META["CSRF_COOKIE"] = _get_new_csrf_key()
+            request.META["CSRF_COOKIE"] = _get_new_csrf_key()
 
         self.token = csrf_token
+
+        return request
 
     def check(self):
 
@@ -136,7 +137,7 @@ class TokenChecker(CsrfChecker):
 
         return None
 
-    def process_response(self, response):
+    def process_response(self, request, response):
 
         # If CSRF_COOKIE is unset, then CsrfViewMiddleware.process_view was
         # never called, probaby because a request middleware returned a response
@@ -246,7 +247,10 @@ class CsrfViewMiddleware(object):
             return None
 
         for checker in self.checker_classes:
-            self.checkers.append(checker(request, callback, callback_args, callback_kwargs))
+            checker_instance = checker(request)
+            self.checkers.append(checker_instance)
+            request = checker_instance.process_request(request)
+        return request
 
         # Wait until request.META["CSRF_COOKIE"] has been manipulated before
         # bailing out, so that get_token still works
@@ -275,6 +279,6 @@ class CsrfViewMiddleware(object):
             return response
 
         for checker in self.checkers:
-            response = checker.process_response(response)
+            response = checker.process_response(request, response)
 
         return response
