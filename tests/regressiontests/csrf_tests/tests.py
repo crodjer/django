@@ -388,14 +388,14 @@ class CsrfViewMiddlewareTest(TestCase):
         req2 = CsrfViewMiddleware().process_view(req, post_form_view, (), {})
         self.assertEqual(403, req2.status_code)
 
-    @override_settings(CSRF_COOKIE_DOMAIN='example.com')
+    @override_settings(CSRF_COOKIE_DOMAIN='www.example.com')
     def test_bad_origin_header_2(self):
         """
         Test if a bad origin header is rejected for subdomains.
         """
         req = self._get_POST_request_with_token()
         req.META['HTTP_HOST'] = 'www.example.com'
-        req.META['HTTP_ORIGIN'] = 'http://www.example.com'
+        req.META['HTTP_ORIGIN'] = 'http://test.example.com'
         req2 = CsrfViewMiddleware().process_view(req, post_form_view, (), {})
         self.assertEqual(403, req2.status_code)
 
