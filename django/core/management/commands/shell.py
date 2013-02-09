@@ -21,9 +21,20 @@ class Command(NoArgsCommand):
 
     def ipython(self):
         try:
+            import warnings
+            import exceptions
+
             from IPython.frontend.terminal.ipapp import TerminalIPythonApp
+
+            sqlite_warnings = lambda action: warnings.filterwarnings(
+                action, category=exceptions.RuntimeWarning,
+                module='django.db.backends.sqlite3'
+            )
+
             app = TerminalIPythonApp.instance()
+            sqlite_warnings("ignore")
             app.initialize(argv=[])
+            sqlite_warnings("default")
             app.start()
         except ImportError:
             # IPython < 0.11
